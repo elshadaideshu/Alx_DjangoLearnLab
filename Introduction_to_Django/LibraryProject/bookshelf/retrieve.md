@@ -2,6 +2,6 @@
 
 Command:
 ```python
-retrieved_book = Book.objects.all()
-for b in retrieved_book:
-    print(b.title, b.author, b.publication_year)
+book = Book.objects.get(title="1984")
+print(book.title, book.author, book.publication_year)
+1984 George Orwell 1949
