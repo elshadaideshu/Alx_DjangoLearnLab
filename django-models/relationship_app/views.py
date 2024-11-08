@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from .models import Book  # Import your Book model
+from .models import Book, Library  # Import both Book and Library models
 
 # Function-based view to list all books
 def list_books(request):
@@ -13,7 +13,7 @@ def list_books(request):
 class LibraryDetailView(View):
     def get(self, request, pk):
         library = get_object_or_404(Library, pk=pk)  # Get the library by primary key
-        return render(request, 'library_detail.html', {'library': library})
+        return render(request, 'relationship_app/library_detail.html', {'library': library})  # Render the library detail template
 
 # User Registration View
 class RegisterView(View):
