@@ -17,6 +17,8 @@ class LibraryDetailView(View):
         return render(request, 'library_detail.html', {'library': library})
 
 # User Registration View
+
+
 class RegisterView(View):
     def get(self, request):
         form = UserCreationForm()
@@ -26,6 +28,6 @@ class RegisterView(View):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Automatically log in the user after registration
-            return redirect('list_books')  # Redirect to the list of books after registration
+            login(request, user)  # Log in the user after registration
+            return redirect('list_books')  # Redirect to the list of books
         return render(request, 'registration/register.html', {'form': form})
