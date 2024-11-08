@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import list_books, LibraryDetailView, RegisterView
+from .views import list_books, LibraryDetailView, RegisterView  # Ensure RegisterView is imported
 
 urlpatterns = [
     path('books/', list_books, name='list_books'),  # URL for the function-based view to list books
