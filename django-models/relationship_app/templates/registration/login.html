@@ -1,9 +1,10 @@
-<!-- registration/login.html -->
+<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Login</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <h1>Login</h1>
@@ -12,6 +13,6 @@
         {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
-    <p><a href="{% url 'register' %}">Register</a></p>
+    <a href="{% url 'register' %}">Register</a>
 </body>
 </html>
