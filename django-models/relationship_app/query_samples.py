@@ -28,7 +28,8 @@ def list_books_in_library(library_name):
 def get_librarian_for_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        return library.librarian
+        librarian = Librarian.objects.get(library=library)  # Correctly accessing the librarian for the library
+        return librarian
     except Library.DoesNotExist:
         return None
     except Librarian.DoesNotExist:
@@ -37,10 +38,10 @@ def get_librarian_for_library(library_name):
 # Sample usage
 if __name__ == "__main__":
     author_books = get_books_by_author("J.K. Rowling")
-    print("Books by J.K. Rowling:", author_books)
+    print("Books by J.K. Rowling:", [book.title for book in author_books] if author_books else "No books found.")
 
     library_books = list_books_in_library("Main Library")
-    print("Books in Main Library:", library_books)
+    print("Books in Main Library:", [book.title for book in library_books] if library_books else "No books found.")
 
     librarian = get_librarian_for_library("Main Library")
-    print("Librarian for Main Library:", librarian)
+    print("Librarian for Main Library:", librarian.name if librarian else "No librarian found.")
