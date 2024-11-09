@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Book, Library 
 from .models import Library
 from django.views.generic.detail import DetailView # Import both Book and Library models
+"relationship_app/register.html"
 
 # Function-based view to list all books
 def list_books(request):
