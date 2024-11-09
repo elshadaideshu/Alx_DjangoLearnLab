@@ -2,12 +2,10 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from .views import list_books, LibraryDetailView, RegisterView 
 # relationship_app/urls.py
-from .views import admin_view, librarian_view, member_view
+from .views import admin_view
 
 urlpatterns = [
     path('admin/', admin_view, name='admin_view'),  # URL for Admin view
-    path('librarian/', librarian_view, name='librarian_view'),  # URL for Librarian view
-    path('member/', member_view, name='member_view'),  # URL for Member view
 ] # Import your custom views
 
 urlpatterns = [
