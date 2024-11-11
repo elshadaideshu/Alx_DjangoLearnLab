@@ -1,7 +1,7 @@
 # relationship_app/urls.py
 from django.urls import path
 from .views import RegisterView, ListBooksView, AddBookView, EditBookView, DeleteBookView
-from .admin_view import admin_view  # Assuming this is still needed
+from .admin_view import admin_view  # Assuming you have this view
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
