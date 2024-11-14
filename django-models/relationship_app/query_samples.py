@@ -2,46 +2,63 @@ import os
 import django
 
 # Set up Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'relationship_app.settings')  # Replace with your project's settings module
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')
 django.setup()
 
 from relationship_app.models import Author, Book, Library, Librarian
 
-# Query all books by a specific author
+# Query to retrieve all books by a specific author
 def get_books_by_author(author_name):
     try:
         author = Author.objects.get(name=author_name)
-        books = Book.objects.filter(author=author)
+        books = author.books.all()
         return books
     except Author.DoesNotExist:
         return None
 
-# List all books in a library
-def list_books_in_library(library_name):
+# Query to list all books in a library
+def get_books_in_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        return library.books.all()
+        books = library.books.all()
+        return books
     except Library.DoesNotExist:
         return None
 
-# Retrieve the librarian for a library
+# Query to retrieve the librarian for a library
 def get_librarian_for_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        librarian = Librarian.objects.get(library=library)  # Correctly accessing the librarian for the library
+        librarian = library.librarian
         return librarian
     except Library.DoesNotExist:
         return None
-    except Librarian.DoesNotExist:
-        return None
 
-# Sample usage
+# Example usage
 if __name__ == "__main__":
-    author_books = get_books_by_author("J.K. Rowling")
-    print("Books by J.K. Rowling:", [book.title for book in author_books] if author_books else "No books found.")
+    # Replace with actual data for testing
+    author_name = "Your Author Name"
+    library_name = "Your Library Name"
 
-    library_books = list_books_in_library("Main Library")
-    print("Books in Main Library:", [book.title for book in library_books] if library_books else "No books found.")
+    print("Books by Author:")
+    books_by_author = get_books_by_author(author_name)
+    if books_by_author:
+        for book in books_by_author:
+            print(book.title)
+    else:
+        print("Author not found.")
 
-    librarian = get_librarian_for_library("Main Library")
-    print("Librarian for Main Library:", librarian.name if librarian else "No librarian found.")
+    print("\nBooks in Library:")
+    books_in_library = get_books_in_library(library_name)
+    if books_in_library:
+        for book in books_in_library:
+            print(book.title)
+    else:
+        print("Library not found.")
+
+    print("\nLibrarian for Library:")
+    librarian = get_librarian_for_library(library_name)
+    if librarian:
+        print(librarian.name)
+    else:
+        print("Library not found.")
