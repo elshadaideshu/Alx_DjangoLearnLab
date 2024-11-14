@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import list_books, LibraryDetailView, register, user_login, user_logout
 from .views import admin_view, librarian_view, member_view
-from .views import add_book, edit_book, delete_book, list_books  # Assuming you have a list_books view
+from .views import add_book, edit_book, delete_book, list_books  # Assuming you have a list_books view # Import your views
 
 
 
