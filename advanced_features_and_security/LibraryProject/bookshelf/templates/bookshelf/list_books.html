@@ -1,0 +1,29 @@
+<!-- templates/relationship_app/list_books.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Books</title>
+</head>
+<body>
+    <h1>Books Available:</h1>
+    <ul>
+        {% for book in books %}
+        <li>{{ book.title }} by {{ book.author.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Example Form to Add a New Book -->
+    <h2>Add a New Book:</h2>
+    <form method="post" action="{% url 'add_book' %}">  <!-- Adjust the URL as necessary -->
+        {% csrf_token %}
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+        
+        <input type="submit" value="Add Book">
+    </form>
+</body>
+</html>

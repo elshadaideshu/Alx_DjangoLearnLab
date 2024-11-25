@@ -1,5 +1,7 @@
 # LibraryProject/bookshelf/views.py
 from django.contrib.auth.decorators import permission_required
+from django.shortcuts import render
+from django import forms
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book
 from .forms import BookForm  # Assume you have a form for Book
@@ -31,6 +33,20 @@ def book_edit(request, pk):
     else:
         form = BookForm(instance=book)
     return render(request, 'bookshelf/book_form.html', {'form': form})
+
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'published_date']
+
+def book_search(request):
+    query = request.GET.get('q')
+    if query:
+        books = Book.objects.filter(title__icontains=query)  # Securely parameterized query
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 
 @permission_required('bookshelf.can_delete', raise_exception=True)
 def book_delete(request, pk):
