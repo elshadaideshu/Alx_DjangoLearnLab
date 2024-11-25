@@ -52,6 +52,20 @@ INSTALLED_APPS = [
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'", "https://trusted-script-source.com")
 CSP_STYLE_SRC = ("'self'", "https://trusted-style-source.com")
+# Force HTTPS connections
+SECURE_SSL_REDIRECT = True  # Redirect all non-HTTPS requests to HTTPS
+SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security for one year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Include all subdomains in HSTS policy
+SECURE_HSTS_PRELOAD = True  # Allow preloading of the HSTS policy
+# Secure cookie settings
+SESSION_COOKIE_SECURE = True  # Ensure session cookies are sent only over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are sent only over HTTPS
+# Security headers
+X_FRAME_OPTIONS = 'DENY'  # Prevent your site from being framed
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from MIME-sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enable browser's XSS filtering
+# SECURE_SSL_REDIRECT: Redirects all HTTP traffic to HTTPS for secure communication.
+# SECURE_HSTS_SECONDS: Instructs browsers to only use HTTPS for the specified duration.
 
 MIDDLEWARE = [
     'csp.middleware.CSPMiddleware',
