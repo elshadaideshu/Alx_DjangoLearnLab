@@ -33,7 +33,18 @@ def book_edit(request, pk):
     else:
         form = BookForm(instance=book)
     return render(request, 'bookshelf/book_form.html', {'form': form})
+# LibraryProject/bookshelf/views.py
 
+
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the new book to the database
+            return redirect('book_list')  # Redirect to the book list page
+    else:
+        form = BookForm()
+    return render(request, 'bookshelf/book_form.html', {'form': form})
 
 class BookForm(forms.ModelForm):
     class Meta:
