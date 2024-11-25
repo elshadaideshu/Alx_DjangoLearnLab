@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 # settings.py
-AUTH_USER_MODEL = 'relationship_app.customUser'  # Replace 'your_app' with the actual app name
+AUTH_USER_MODEL = 'bookshelf.CustomUser'  # Replace 'your_app' with the actual app name
 
 
 # Application definition
