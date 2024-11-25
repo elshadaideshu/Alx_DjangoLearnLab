@@ -1,44 +1,44 @@
-# views.py
+# LibraryProject/bookshelf/views.py
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Document
-from .forms import DocumentForm  # Assume you have a form for Document
+from .models import Book
+from .forms import BookForm  # Assume you have a form for Book
 
-@permission_required('your_app.can_view', raise_exception=True)
-def document_list(request):
-    documents = Document.objects.all()
-    return render(request, 'your_app/document_list.html', {'documents': documents})
+@permission_required('bookshelf.can_view', raise_exception=True)
+def book_list(request):
+    books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 
-@permission_required('your_app.can_create', raise_exception=True)
-def document_create(request):
+@permission_required('bookshelf.can_create', raise_exception=True)
+def book_create(request):
     if request.method == 'POST':
-        form = DocumentForm(request.POST)
+        form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('document_list')
+            return redirect('book_list')
     else:
-        form = DocumentForm()
-    return render(request, 'your_app/document_form.html', {'form': form})
+        form = BookForm()
+    return render(request, 'bookshelf/book_form.html', {'form': form})
 
-@permission_required('your_app.can_edit', raise_exception=True)
-def document_edit(request, pk):
-    document = get_object_or_404(Document, pk=pk)
+@permission_required('bookshelf.can_edit', raise_exception=True)
+def book_edit(request, pk):
+    book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
-        form = DocumentForm(request.POST, instance=document)
+        form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
-            return redirect('document_list')
+            return redirect('book_list')
     else:
-        form = DocumentForm(instance=document)
-    return render(request, 'your_app/document_form.html', {'form': form})
+        form = BookForm(instance=book)
+    return render(request, 'bookshelf/book_form.html', {'form': form})
 
-@permission_required('your_app.can_delete', raise_exception=True)
-def document_delete(request, pk):
-    document = get_object_or_404(Document, pk=pk)
+@permission_required('bookshelf.can_delete', raise_exception=True)
+def book_delete(request, pk):
+    book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
-        document.delete()
-        return redirect('document_list')
-    return render(request, 'your_app/document_confirm_delete.html', {'document': document})
+        book.delete()
+        return redirect('book_list')
+    return render(request, 'bookshelf/book_confirm_delete.html', {'book': book})
 # views.py
 # Permissions are enforced using the @permission_required decorator.
 # Users must have specific permissions based on their assigned groups:
