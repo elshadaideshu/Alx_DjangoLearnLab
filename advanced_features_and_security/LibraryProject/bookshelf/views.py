@@ -1,10 +1,25 @@
 # LibraryProject/bookshelf/views.py
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render
-from django import forms
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book
 from .forms import BookForm  # Assume you have a form for Book
+# LibraryProject/bookshelf/views.py
+from .forms import ExampleForm
+
+def example_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the data in form.cleaned_data
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            # Here you can add logic to save the data or perform other actions
+            return redirect('success_page')  # Redirect to a success page or another view
+    else:
+        form = ExampleForm()
+    
+    return render(request, 'bookshelf/example_form.html', {'form': form})
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
@@ -33,18 +48,8 @@ def book_edit(request, pk):
     else:
         form = BookForm(instance=book)
     return render(request, 'bookshelf/book_form.html', {'form': form})
-# LibraryProject/bookshelf/views.py
-
-
-def add_book(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST)
-        if form.is_valid():
-            form.save()  # Save the new book to the database
-            return redirect('book_list')  # Redirect to the book list page
-    else:
-        form = BookForm()
-    return render(request, 'bookshelf/book_form.html', {'form': form})
+from django import forms
+from .models import Book
 
 class BookForm(forms.ModelForm):
     class Meta:
