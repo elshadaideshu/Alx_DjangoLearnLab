@@ -34,3 +34,9 @@
 ### Ordering
 - **Order by Title**: `/api/books/?ordering=title`
 - **Order by Publication Year**: `/api/books/?ordering=publication_year`
+## Running Tests
+
+To run the unit tests for the API, use the following command:
+
+```bash
+python manage.py test api
