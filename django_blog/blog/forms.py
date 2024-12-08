@@ -1,12 +1,18 @@
-# blog/forms.py
-
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 # blog/forms.py
-from .models import Post
-# blog/forms.py
 from .models import Comment
+from .models import Post, Tag
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'tags']  # Include tags
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['tags'].queryset = Tag.objects.all()  # Queryset for available tags
 
 class CommentForm(forms.ModelForm):
     class Meta:
