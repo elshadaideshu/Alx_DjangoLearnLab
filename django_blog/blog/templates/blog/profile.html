@@ -1,0 +1,7 @@
+<!-- blog/templates/blog/profile.html -->
+<h2>User Profile</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="email" name="email" value="{{ user.email }}" required>
+    <button type="submit">Update Profile</button>
+</form>
