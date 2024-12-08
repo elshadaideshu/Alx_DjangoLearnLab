@@ -15,18 +15,28 @@ from .views import (
 )
 # blog/urls.py
 
-from .views import posts_by_tag  # Import the tagged posts view
+from .views import posts_by_tag  
+from .views import (
+    PostListView,
+    PostDetailView,
+    PostCreateView,
+    PostUpdateView,
+    PostDeleteView,
+    PostByTagListView,  # Import the new view
+)
+
+
 
 
 
 
 urlpatterns = [
-    path('tags/<str:tag_name>/', posts_by_tag, name='tagged-posts'),
     path('', PostListView.as_view(), name='post-list'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='tagged-posts'),  # Tagged posts URL
     path('search/', search_posts, name='search-posts'),  # Search URL
     path('', PostListView.as_view(), name='post-list'),  # List all posts
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),  # View a single post
