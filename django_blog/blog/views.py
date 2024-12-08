@@ -13,6 +13,34 @@ from .forms import CommentForm
 from django.shortcuts import get_object_or_404, redirect
 from django.db.models import Q
 from .models import Post, Tag
+from .forms import PostForm
+
+def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post-list')
+    else:
+        form = PostForm()
+    return render(request, 'blog/post_form.html', {'form': form})
+
+def post_update(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post-detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'blog/post_form.html', {'form': form})
+# blog/views.py
+
+def posts_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = tag.posts.all()  # Retrieve all posts associated with the tag
+    return render(request, 'blog/tagged_posts.html', {'posts': posts, 'tag': tag})
 
 def search_posts(request):
     query = request.GET.get('q')
