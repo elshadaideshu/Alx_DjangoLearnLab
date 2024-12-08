@@ -1,17 +1,61 @@
-
-# blog/views.py
-
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 from django.contrib import messages
-# blog/views.py
-
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+# blog/views.py
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Post, Comment
+from .forms import CommentForm
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comments = post.comments.all()
+    comment_form = CommentForm()
+
+    if request.method == 'POST' and request.user.is_authenticated:
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('post-detail', pk=post.pk)
+
+    return render(request, 'blog/post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'comment_form': comment_form,
+    })
+
+@login_required
+def comment_edit(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user != comment.author:
+        return redirect('post-detail', pk=comment.post.pk)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('post-detail', pk=comment.post.pk)
+    else:
+        form = CommentForm(instance=comment)
+
+    return render(request, 'blog/comment_form.html', {'form': form})
+
+@login_required
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user == comment.author:
+        post_pk = comment.post.pk
+        comment.delete()
+        return redirect('post-detail', pk=post_pk)
+    return redirect('post-detail', pk=comment.post.pk)
+
 
 class PostListView(ListView):
     model = Post

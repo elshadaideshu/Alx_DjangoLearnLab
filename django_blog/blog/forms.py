@@ -5,6 +5,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 # blog/forms.py
 from .models import Post
+# blog/forms.py
+from .models import Comment
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['content'].label = "Your Comment"
 
 class PostForm(forms.ModelForm):
     class Meta:
