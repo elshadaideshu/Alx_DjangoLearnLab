@@ -14,15 +14,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ('username', 'email', 'password', 'bio', 'profile_picture')
 
     def create(self, validated_data):
-        user = User(
+        # Create a user instance using the create_user method
+        user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
+            password=validated_data['password'],  # This will hash the password
             bio=validated_data.get('bio', ''),
             profile_picture=validated_data.get('profile_picture', None),
         )
-        user.set_password(validated_data['password'])  # Hash the password
-        user.save()
-
         # Create a token for the user
         Token.objects.create(user=user)
         return user
