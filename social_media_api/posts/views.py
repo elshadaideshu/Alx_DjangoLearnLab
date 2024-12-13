@@ -18,6 +18,7 @@ from .models import Post, Like
 from notifications.models import Notification  # Assuming Notification model is defined in notifications app
 
 User = get_user_model()
+["generics.get_object_or_404(Post, pk=pk)"]
 
 class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
