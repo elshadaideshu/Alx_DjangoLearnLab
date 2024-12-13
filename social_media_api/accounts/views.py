@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from .serializers import UserRegistrationSerializer, UserLoginSerializer
 # accounts/views.py
@@ -7,13 +6,50 @@ from .serializers import UserRegistrationSerializer, UserLoginSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import get_user_model
-# posts/views.py
-
 from rest_framework import viewsets
 from .models import Post
 from .serializers import PostSerializer
 from django.shortcuts import get_list_or_404
+# accounts/views.py
+
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        try:
+            user_to_follow = User.objects.get(id=user_id)
+            request.user.following.add(user_to_follow)  # Assuming 'following' is the ManyToMany field
+            return Response({"message": f"You are now following {user_to_follow.username}"}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        try:
+            user_to_unfollow = User.objects.get(id=user_id)
+            request.user.following.remove(user_to_unfollow)  # Assuming 'following' is the ManyToMany field
+            return Response({"message": f"You have unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class FollowingListView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        following = request.user.following.all()
+        following_usernames = [user.username for user in following]
+        return Response({"following": following_usernames}, status=status.HTTP_200_OK)
+# posts/views.py
+
+
 
 class FeedView(viewsets.ReadOnlyModelViewSet):
     serializer_class = PostSerializer
