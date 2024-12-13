@@ -11,6 +11,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+# social_media_api/settings.py
+
+import os
+
+# Base directory of your project
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+
+# The directory where collectstatic will collect static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Other settings...
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
